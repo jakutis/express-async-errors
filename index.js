@@ -33,15 +33,18 @@ function patchRouterParam() {
   };
 }
 
-Object.defineProperty(Layer.prototype, 'handle', {
-  enumerable: true,
-  get() {
-    return this.__handle;
-  },
-  set(fn) {
-    fn = wrap(fn);
-    this.__handle = fn;
-  },
-});
+if (!Layer.prototype.__express_async_errors_patched) {
+  Layer.prototype.__express_async_errors_patched = true
+  Object.defineProperty(Layer.prototype, 'handle', {
+    enumerable: true,
+    get() {
+      return this.__handle;
+    },
+    set(fn) {
+      fn = wrap(fn);
+      this.__handle = fn;
+    },
+  });
 
-patchRouterParam();
+  patchRouterParam();
+}
